@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1a0509"><title>RAMH ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#120306;--wine:#5a0f1e;--rose:#ffb6c8;--glass:rgba(255,255,255,.07);--line:rgba(255,182,200,.25);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);box-sizing:border-box}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:radial-gradient(circle at 50% 0,#4a0d1b,var(--bg) 70%);color:#fde8ee;font-family:Cairo,Tahoma,sans-serif;min-height:100vh;overflow-x:hidden}
+#bg{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+#bg span{position:absolute;bottom:-30px;opacity:.5;animation:up linear forwards}
+@keyframes up{to{transform:translateY(-110vh) rotate(40deg);opacity:0}}
+main{position:relative;z-index:1;max-width:560px;margin:auto;padding:18px 16px 60px}
+.pg{animation:in .7s ease both}
+@keyframes in{from{opacity:0;transform:translateY(24px) scale(.97);filter:blur(6px)}}
+h1,h2{text-align:center;color:var(--rose);text-shadow:0 0 18px rgba(255,80,120,.6)}
+.card{background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(10px);border-radius:18px;padding:16px;margin:12px 0;line-height:2;box-shadow:0 0 22px rgba(255,60,100,.12);animation:in .6s ease both}
+button{font:inherit;color:#fff;background:linear-gradient(135deg,#a3153a,#5a0f1e);border:1px solid var(--rose);border-radius:30px;padding:12px 26px;cursor:pointer;box-shadow:0 0 20px rgba(255,60,110,.45);transition:.2s}
+button:active{transform:scale(.92)}
+.c{text-align:center}.big{font-size:1.9rem;line-height:1.7}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid button{border-radius:16px;padding:16px 6px}
+.back{position:sticky;top:0;z-index:5;margin-bottom:6px}
+.pol{background:#fff;color:#4a0d1b;border-radius:6px;padding:10px 10px 4px;transform:rotate(-2deg);box-shadow:0 6px 18px #000a;cursor:pointer}
+.pol:nth-child(even){transform:rotate(2deg)}
+.pol i{display:block;height:90px;background:#f3c3cf;border-radius:4px;font-size:2rem;line-height:90px;text-align:center;font-style:normal;background-size:cover}
+.heart{font-size:3rem;cursor:pointer;display:inline-block;animation:beat 1.4s infinite}
+@keyframes beat{50%{transform:scale(1.18)}}
+.gift{font-size:3.4rem;cursor:pointer;display:block}
+.tl{border-right:3px solid var(--rose);padding-right:14px;margin:10px 6px}
+.tl div{cursor:pointer;margin:14px 0}
+#toast{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;background:#000c;padding:20px}
+#toast div{background:linear-gradient(160deg,#4a0d1b,#1a0509);border:1px solid var(--rose);border-radius:22px;padding:24px;max-width:480px;max-height:80vh;overflow:auto;line-height:2;animation:in .5s}
+#fin{position:fixed;inset:0;background:#000;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}
+#fin .h{font-size:1rem;transition:font-size 4s}
+</style></head><body>
+<div id="bg"></div><main id="app"></main><div id="toast" onclick="this.style.display='none'"><div id="tb"></div></div>
+<script>
+/* ====== المحتوى — عدّلي/زوّدي هنا بسهولة ====== */
+const IMGS=[]; // حط روابط/Base64 الصور هنا بالترتيب
+const REASONS=["عشان وجودك بيفرق.","عشان ضحكتك بتغير مود يومي.","عشان بحس إني مرتاح وأنا بكلمك.","عشان تفاصيلك الصغيرة بتفضل في دماغي.","عشان إنتِ إنتِ، ومفيش حد شبهك.","عشان لما بتزعلي بحس إن الدنيا وقفت.","عشان صوتك لوحده بيهدّيني.","عشان بتفهميني من غير ما أتكلم.","عشان طيبتك حقيقية مش تمثيل.","عشان أي يوم فيه كلمة منك بيبقى أحلى.","عشان بتخليني أحب أبقى أحسن.","عشان حتى هزارك بيدخل القلب.","عشان معاكي بحس إني في بيتي.","عشان إنتِ أحلى صدفة حصلتلي."];
+const LOVES=["ضحكتك","طريقة كلامك","عينيكي لما بتتكسفي","اهتمامك بالتفاصيل","حنيتك","عنادك اللطيف","طريقتك في الاعتراض","اسمك لما بنطقه","رسايلك الصغيرة","غيرتك الحلوة","هدوءك","جنانك لما بتفرحي","وشك لما بتصحي","دعواتك","قلقك عليا","طريقتك تقولي \"خد بالك\"","ذوقك","كسوفك","صبرك عليا","إنك بتفكريني بالحاجات الحلوة","إحساسك بيا","طموحك","صدقك","روحك الحلوة","وإنك إنتِ"];
+const RANDOM=["على فكرة... وسط كل الناس اللي ممكن أقابلهم، أنا لسه شايف إن أحلى صدفة كانت إنتِ.","لسه فاكر أول مرة ضحكتي فيها، ومن يومها وأنا بدوّر على السبب أعمله تاني.","لو الدنيا اتلخبطت، كفاية أعرف إنك موجودة وكل حاجة بتتظبط.","نفسي أقولك صباح الخير بنفسي كل يوم.","إنتِ مش بس حد بحبه، إنتِ حد بحس بالأمان جنبه.","كل ما أقول خلاص عرفت أحبك قد إيه، ألاقي في قلبي مساحة جديدة ليكي.","النهاردة فكرت فيكي أكتر من الأمس، وبكرة هيبقى أكتر.","أنا مش بقول كتير، بس كل حاجة حلوة بتفكرني بيكي."];
+const SECRETS=["يمكن مبقولهاش كتير، بس وجودك بيفرق معايا أكتر مما تتخيلي.","أوقات بسكت مش عشان مفيش كلام، لكن عشان الكلام مش كفاية.","بتأكد إن رسالتك وصلت وأنا مبتسم قبل ما أفتحها.","بخاف أي حاجة تزعلك أكتر ما بخاف على نفسي.","كنت بتدرب أقولك أحبك قبل ما أقولها فعلًا."];
+const MISS=["وحشتيني؟ طب خدي نفس، أنا كمان وحشاني ضحكتك.","شوفي السما دلوقتي... أكيد في نفس القمر اللي بيسلم عليكي مني.","افتكري إن في حد دلوقتي بيفكر فيكي وبيبتسم.","مسافة أو مش مسافة، إنتِ أقرب ناس لقلبي."];
+  const HEARTS=["❤️ إنتِ أحلى حاجة حصلتلي.","🎁 مفاجأة! عندك طلب عندي... اطلبي أي حاجة النهاردة.","❤️ كل يوم معاكي هدية.","🎁 مفاجأة! حضن كبير مستنيكي.","❤️ بحبك أكتر من إمبارح."];
+const GIFTS=[["💌","رسالة حب","يا رحمة، لو الكلام بيوصف، كنت قلتلك كل حاجة. بس إنتِ أكبر من الكلام."],["📸","ذكرى","فاكر أول مرة حسيت فيها إنك مش حد عادي... من يومها وأنا اتغيرت."],["✨","سبب جديد","عشان معاكي حتى السكوت له معنى."],["🔮","رسالة للمستقبل","بعد سنين لما تقري دي، اعرفي إني لسه بحبك زي أول يوم وأكتر."],["🤝","وعد","أوعدك أفضل أختارك كل يوم، حتى في الأيام اللي تبقي فيها صعبة."],["🎉","مفاجأة","اضغطي هنا وقولي \"حازم بيحبني\" بصوت عالي 😂❤️"],["👑","الهدية الأخيرة","إنتِ الهدية. كل الحكاية دي كانت عشان أقولك: شكرًا إنك دخلتي حياتي، وإن وجودك ده أحلى حاجة حصلتلي. بحبك يا رحمة، وهفضل."]];
+const QUIZ=[["مين بيحب التاني أكتر؟",["حازم","رحمة"]],["مين بيفتكر التفاصيل الصغيرة؟",["حازم","رحمة"]],["مين وحشان التاني دلوقتي؟",["حازم","رحمة"]]];
+const MEMS=[["أول مرة","فاكر اليوم ده كأنه امبارح... حاجة جوايا قالتلي إن ده مش يوم عادي."],["أول ضحكة","ضحكتك يومها كانت بداية كل حاجة حلوة."],["أول مكالمة","الوقت عدّى من غير ما أحس، وكنت نفسي مانتهيش."],["يوم عمري","مش فارق مكان ولا تفاصيل، المهم إنك كنتي معايا."]];
+const TL=[["الصدفة","في حاجات بتبدأ من غير ما نستعد، وإنتِ كنتي أحلاها."],["أول كلام","من أول كلمة حسيت إن الكلام معاكي مريح."],["24 أكتوبر","اليوم اللي الحكاية بدأت فعلًا."],["النهاردة","وكل يوم بيزيد حاجة حلوة."]];
+const LETTER="يا رحمة...\nمهما حاولت أوصف مكانتك مش هعرف. إنتِ مش مجرد حد بحبه، إنتِ بقيتي جزء من تفاصيل يومي: أول حد بفكر فيه لما أصحى، وآخر حد بتمنى أكلمه قبل ما أنام.\nوجودك فرق معايا بطريقة مش بتتشرح. بقيت أضحك أكتر، وأحلم أكتر، وأحب الأيام أكتر.\nشكرًا إنك إنتِ. ❤️";
+const BIG="لو هقولك حاجة واحدة... هقولك إني اخترتك، وهفضل أختارك.\nمش عشان إنتِ كاملة، لكن عشان إنتِ بالنسبالي أحلى حاجة بتحصل.\nوفي كل يوم بيعدّي، بتأكد إن قلبي عرف طريقه صح.\nبحبك يا رحمة. بحبك بشكل مش هقدر أقيسه.";
+const FINAL="رحمة...\nلو وصلتي لهنا، فإنتِ عارفة أصلًا إنك مش مجرد جزء من حكايتي...\nإنتِ من أجمل أجزاءها.\n\nشكرًا إنك في حياتي. أنا مش عارف الدنيا هتودينا فين، بس عارف إني عايزك فيها دايمًا. بحبك. ❤️\n— حازم";
+const PAGES={letter:["💌","رسالة البداية"],date:["📅","24 أكتوبر"],reasons:["🌹","ليه بحبك؟"],loves:["💗","حاجات بحبها فيكي"],memories:["📷","ذكرياتنا"],random:["🎲","اضغطي هنا"],gifts:["🎁","7 هدايا"],secrets:["🤫","أسرار صغيرة"],sorry:["🥺","لو زعلتي"],miss:["💭","لو وحشتك"],game:["🎮","اختاري قلب"],quiz:["❓","اختبار"],big:["📜","الرسالة الكبيرة"],count:["⏳","العد التنازلي"],music:["🎵","Playlist"],surprise:["🔒","أكبر مفاجأة"]};
+/* ====== المحرك ====== */
+const $=s=>document.querySelector(s),app=$('#app');
+let seen=new Set();try{seen=new Set(JSON.parse(localStorage.getItem('ramh_seen')||'[]'))}catch(e){}
+const save=()=>{try{localStorage.setItem('ramh_seen',JSON.stringify([...seen]))}catch(e){}};
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const nl=t=>t.replace(/\n/g,'<br>');
+const pop=t=>{$('#tb').innerHTML=nl(t);$('#toast').style.display='flex'};
+const cards=(a,f)=>a.map((x,i)=>`<div class="card" style="animation-delay:${i*.08}s">${f?f(x,i):x}</div>`).join('');
+const wrap=(t,h,p)=>{app.innerHTML=`<div class="pg">${p?'<button class="back" onclick="home()">→ رجوع</button>':''}<h2>${t}</h2>${h}</div>`;scrollTo(0,0)};
+setInterval(()=>{const s=document.createElement('span');s.textContent=pick(['❤️','✨','💗','⭐','🌹']);s.style.cssText=`left:${Math.random()*100}%;font-size:${10+Math.random()*18}px;animation-duration:${6+Math.random()*6}s`;$('#bg').appendChild(s);setTimeout(()=>s.remove(),12000)},500);
+function intro(){app.innerHTML='<div class="pg c" style="padding-top:18vh"><p class="big" id="t1">في حاجات في حياتنا بتحصل صدفة...<br>وفي حاجات بتحصل عشان كان لازم تحصل.</p></div>';
+const s=[()=>'<p class="big">وأنا كان لازم أقابلِك ❤️</p>',()=>'<h1 style="font-size:3.4rem" onclick="pop(\'اسمك لوحده بيبتسّمني ❤️\')">Rahma</h1>',()=>'<p>من Hazem ❤️</p><button onclick="home()">ابدئي الحكاية ❤️</button>'];
+let i=0;const d=$('.pg');const go=()=>{if(i<3){const e=document.createElement('div');e.className='pg';e.innerHTML=s[i++]();d.appendChild(e);setTimeout(go,2200)}};setTimeout(go,2600)}
+function home(){let t=0;app.innerHTML=`<div class="pg"><h1><span class="heart" id="lg">❤️</span><br>RAMH</h1><p class="c">من Hazem إلى Rahma — ${seen.size}/${Object.keys(PAGES).length-1} اتفتحوا</p><div class="grid">${Object.keys(PAGES).map(k=>`<button onclick="open_('${k}')">${PAGES[k][0]}<br>${PAGES[k][1]}${seen.has(k)?' ✓':''}</button>`).join('')}</div><p class="c" style="opacity:.6">⭐</p></div>`;
+$('#lg').onclick=()=>{if(++t==3)pop('كشفتي أول سر 🤭 قلبي بيدق بسرعة كل ما أشوف اسمك.')};
+$('.c:last-child').onclick=()=>pop('نجمة سرية ✨ كل ليلة بتمنى نفس الأمنية: إنتِ.')}
+function open_(k){if(k!='surprise')seen.add(k);save();R[k]()}
+const R={
+letter:()=>wrap('رسالة البداية',cards([LETTER]),1),
+date:()=>{wrap('','<h1 id="dt" style="font-size:3rem">24<br>OCTOBER</h1><p class="c">اليوم اللي بدأت فيه حكاية مش عايزها تخلص.</p><div class="tl">'+TL.map((x,i)=>`<div onclick="pop(TL[${i}][1])">● <b>${x[0]}</b></div>`).join('')+'</div>',1);let p;$('#dt').onpointerdown=()=>p=setTimeout(()=>pop('ضغطة طويلة؟ يعني فاكرة التاريخ زيي 🥹 أحلى يوم في السنة.'),800);$('#dt').onpointerup=()=>clearTimeout(p)},
+reasons:()=>wrap('عارفة ليه بحبك؟ ❤️',cards(REASONS,(x,i)=>`<b>${i+1}.</b> ${x}`),1),
+loves:()=>wrap('100 حاجة بحبها فيكي ❤️',cards(LOVES,(x,i)=>`${i+1}. بحب ${x}`)+'<p class="c">وحتى بعد الـ100... لسه في حاجات كتير معرفتش أكتبها.</p>',1),
+memories:()=>{wrap('ذكرياتنا',`<div class="grid">${MEMS.map((m,i)=>`<div class="pol" onclick="pop('<b>${m[0]}</b><br>'+MEMS[${i}][1])"><i style="${IMGS[i]?`background-image:url(${IMGS[i]})`:''}">${IMGS[i]?'':'📷'}</i><p class="c">${m[0]}</p></div>`).join('')}</div>`,1)},
+random:()=>wrap('رسائل عشوائية','<p class="c"><button onclick="pop(pick(RANDOM))">اضغطي هنا ❤️</button></p>',1),
+gifts:()=>wrap('7 هدايا 🎁',GIFTS.map((g,i)=>`<div class="card c"><span class="gift" id="g${i}" onclick="gift(${i})">🎁</span>هدية ${i+1}</div>`).join(''),1),
+secrets:()=>wrap('حاجات يمكن مقلتهالكش...',cards(SECRETS),1),
+sorry:()=>wrap('ولو في يوم زعلتي مني...',cards(["لو في يوم زعلتي مني، اعرفي إني عمري ما أقصد أضايقك. ممكن أغلط وأتلخبط، بس قلبي ساعتها بيبقى تعبان أكتر منك.\nمتسيبيش الزعل يكبر، كلميني وقوليلي. أنا مستعد أسمعك وأصلّح.\nأنا آسف مقدمًا على أي لحظة ضايقتك فيها. وبحبك حتى وإنتِ زعلانة. ❤️"]),1),
+miss:()=>wrap('لو وحشتك...','<p class="c"><button onclick="pop(pick(MISS))">افتحي الرسالة ❤️</button></p>',1),
+game:()=>wrap('لعبة حب ❤️','<p class="c">اختاري قلب:</p><p class="c">'+HEARTS.map((h,i)=>`<span class="heart" onclick="pop(HEARTS[${i}])">❤️</span>`).join(' ')+'</p>',1),
+quiz:()=>{let q=0;const s=()=>{if(q>=QUIZ.length)return wrap('النتيجة','<div class="card c">الإجابة الصح: Hazem بيحب Rahma بشكل مش هتعرفي تقيسيه 😂❤️</div>',1);wrap('اختبار صغير',`<div class="card c"><p>${QUIZ[q][0]}</p>${QUIZ[q][1].map(a=>`<button onclick="Q()">${a}</button>`).join(' ')}</div>`,1)};window.Q=()=>{q++;s()};s()},
+big:()=>wrap('لو هقولك حاجة واحدة...',cards([BIG]),1),
+count:()=>{const n=new Date(),t=new Date(n.getFullYear(),9,24);const f=()=>{const d=t-new Date();return d<-864e5?'عدّى يوم... بس الحكاية لسه مكملة ❤️':d<=0?'النهاردة 24 أكتوبر ❤️':`<span class="big">${Math.floor(d/864e5)}</span> يوم و ${Math.floor(d/36e5)%24} ساعة و ${Math.floor(d/6e4)%60} دقيقة`};wrap('العد التنازلي',`<div class="card c" id="cd">${f()}</div>`,1);const iv=setInterval(()=>{const e=$('#cd');e?e.innerHTML=f():clearInterval(iv)},1000)},
+music:()=>wrap('Playlist 🎵','<div class="card c"><div class="heart">🎧</div><p>اختاري ملف صوت من موبايلك:</p><input type="file" accept="audio/*" onchange="$(\'#au\').src=URL.createObjectURL(this.files[0]);$(\'#au\').play()"><audio id="au" controls style="width:100%;margin-top:12px"></audio></div>',1),
+surprise:()=>{const left=Object.keys(PAGES).filter(k=>k!='surprise'&&!seen.has(k));if(left.length)return wrap('أكبر مفاجأة',`<div class="card c">🔒 دي مش هتتفتح غير لما توصلي للنهاية...<br>فاضل ${left.length} صفحات.</div>`,1);wrap('أكبر مفاجأة','<p class="c"><button onclick="boom()">افتحي المفاجأة ❤️</button></p>',1)}};
+function gift(i){const e=$('#g'+i);e.style.transition='.7s';e.style.transform=['rotate(360deg) scale(1.4)','scale(1.6)','translateY(-20px) rotate(-20deg)','rotate(-360deg)','scale(0)','scale(1.5) rotate(15deg)','scale(2)'][i];e.textContent=GIFTS[i][0];setTimeout(()=>pop(`<b>${GIFTS[i][1]}</b><br>${GIFTS[i][2]}`),600)}
+function boom(){for(let i=0;i<60;i++)setTimeout(()=>{const s=document.createElement('span');s.textContent='❤️';s.style.cssText=`left:${Math.random()*100}%;font-size:${20+Math.random()*30}px;animation-duration:3s`;$('#bg').appendChild(s)},i*40);setTimeout(()=>{pop(FINAL);$('#toast').onclick=end},1800)}
+function end(){$('#toast').onclick=function(){this.style.display='none'};$('#toast').style.display='none';const f=document.createElement('div');f.id='fin';f.innerHTML='<div class="h" id="fh">❤️</div>';document.body.appendChild(f);setTimeout(()=>$('#fh').style.fontSize='9rem',100);const L=['To Rahma ❤️','From Hazem','24 October — Forever a special date.','الحكاية لسه مخلصتش...'];L.forEach((t,i)=>setTimeout(()=>{f.insertAdjacentHTML('beforeend',`<p class="pg big">${t}</p>`)},4500+i*2200));setTimeout(()=>f.insertAdjacentHTML('beforeend','<button onclick="location.reload()">ابدئي من الأول ❤️</button>'),14000)}
+intro();
+</script></body></html>
